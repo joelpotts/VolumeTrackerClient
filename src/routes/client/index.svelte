@@ -22,7 +22,15 @@
 	});
 </script>
 
-{#each Object.entries(volumeSources) as [name, data], index (name)}
-	<h2>{name}</h2>
-	<VolumeCanvas volumeData={data} />
-{/each}
+<h2>Watch Volume Levels Live</h2>
+<p>Here you can see the volume levels for each server that is connected.</p>
+
+{#if volumeSources && Object.keys(volumeSources) > 0}
+    {#each Object.entries(volumeSources) as [name, data], index (name)}
+        <h3>{name}</h3>
+        <VolumeCanvas volumeData={data} />
+    {/each}
+{:else}
+    <p>There are no servers connected right now.</p>
+{/if}
+

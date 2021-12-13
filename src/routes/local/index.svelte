@@ -1,12 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
-	import io from 'socket.io-client';
 	import VolumeCanvas from '../../components/VolumeCanvas.svelte';
-	import { page } from '$app/stores';
 
-	let clientCount = 0;
-	let serverName = $page.params.serverid;
-	let audioCtx, analyser, source, volumeData, socket;
+	let audioCtx, analyser, source, volumeData;
 
 	onMount(() => {
 		audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -30,15 +26,6 @@
 			.catch((err) => {
 				console.log('The following gUM error occured: ' + err);
 			});
-
-		// Set up socket in browser only
-		socket = io('http://localhost:5000', {
-			query: { serverName: $page.params.serverid, socketType: 'server' }
-		});
-
-		socket.on('clientcount', (updatedClientCount) => {
-			clientCount = updatedClientCount;
-		});
 	});
 
 	function processStream() {
@@ -46,23 +33,12 @@
 			requestAnimationFrame(updateAudioData);
 
 			analyser.getByteFrequencyData(volumeData);
-
-			if (clientCount > 0) {
-				emitAudioData();
-			}
 		};
 
 		updateAudioData();
 	}
-
-	function emitAudioData() {
-		socket.emit('volumedata', {
-			serverid: serverName,
-			volumeData: volumeData
-		});
-	}
 </script>
 
-<h2>{serverName}</h2>
-<p>Clients listening: {clientCount}</p>
+<h2>Your Microphone</h2>
+<p>This is only local. No data is being sent to the server.</p>
 <VolumeCanvas {volumeData} />
