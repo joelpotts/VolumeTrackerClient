@@ -1,38 +1,30 @@
-# create-svelte
+# Volume Monitor
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
+This is a tool to help monitor the volume levels of a location, either locally or remotely.
 
-## Creating a project
+## What is the goal of this project?
 
-If you're seeing this, you've probably already done this step. Congrats!
+I have recently struggled with some downstairs neighbours, who claim that we are being too noisy in our apartment. They claim that we play loud music, shout, stomp, and "bang on pipes" (despite there being no pipes in our apartment to bang on). It goes without saying that we do none of these things. I tried to find a solution to cheaply measure and monitor the volume inside our apartment, but could not find anything that suited my needs. What started out as the desire to measure the volume of our apartment, turned into a tool to also stream that data to anyone who wanted to know, downstairs neighbours for example. These are the main goals of the project:
+
+- Be able to measure and graph the volume of a room via a microphone.
+- Be able to broadcast that data so that it can be monitored remotely (i.e. an excuse to finally learn websockets and Socket.io).
+- To be able to maintain a historical record of the volume data (TODO)
+- To send an alert when the volume exceeds a certain threshold (TODO)
+
+## Running the project
+
+To run the project fully you will also need the [backend](https://github.com/joelpotts/VolumeTrackerServer)
+
+### Running the backend
 
 ```bash
-# create a new project in the current directory
-npm init svelte@next
-
-# create a new project in my-app
-npm init svelte@next my-app
+npm install
+node index.js
 ```
 
-> Note: the `@next` is temporary
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Running the frontend
 
 ```bash
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
-
-## Building
-
-Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:
-
-```bash
-npm run build
-```
-
-> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
