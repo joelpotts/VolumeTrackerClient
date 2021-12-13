@@ -1,12 +1,19 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import io from 'socket.io-client';
 	import VolumeCanvas from '../../components/VolumeCanvas.svelte';
 	import { page } from '$app/stores';
 
 	let clientCount = 0;
 	let serverName = $page.params.serverid;
-	let audioCtx, analyser, source, volumeData, socket;
+    let emitRate = $page.query.get('emitrate') || 250;
+	let audioCtx, analyser, source, volumeData, socket, emitInterval;
+
+    onDestroy(() => {
+        if(emitInterval) {
+            clearInterval(emitInterval)
+        }
+    })
 
 	onMount(() => {
 		audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -46,13 +53,16 @@
 			requestAnimationFrame(updateAudioData);
 
 			analyser.getByteFrequencyData(volumeData);
+		};
 
+        updateAudioData();
+
+        emitInterval = setInterval(() => {
 			if (clientCount > 0) {
 				emitAudioData();
 			}
-		};
+        }, emitRate)
 
-		updateAudioData();
 	}
 
 	function emitAudioData() {

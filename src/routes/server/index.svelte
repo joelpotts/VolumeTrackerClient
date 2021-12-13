@@ -2,9 +2,10 @@
     import { goto } from '$app/navigation';
 
 	let serverName = '';
+    let emitRate = 100;
 
 	function handleSubmit() {
-        goto(`/server/${serverName}`)
+        goto(`/server/${serverName}?emitrate=${emitRate}`)
     }
 </script>
 
@@ -12,6 +13,10 @@
 <form on:submit|preventDefault={handleSubmit}>
 	<label for="server-name-input">Server Name</label>
 	<input type="text" name="server-name" id="server-name-input" bind:value={serverName} />
+
+    <label for="emit-rate-input">Emit Rate</label>
+    <input type="number" name="emit-rate" id="emit-rate-input" min="100" bind:value={emitRate}>
+
 	<button disabled={!serverName || serverName.length == 0}>Create</button>
 </form>
 
